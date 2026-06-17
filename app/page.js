@@ -2,108 +2,80 @@
 import { useState, useRef, useEffect } from "react";
 
 // ═══════════════════════════════════════════════════════════════════════
-// EDITE AQUI
-// ytUrl  → ID do YouTube ex: "dQw4w9WgXcQ"
-// photos → arquivos em public/fotos/  ex: ["/fotos/dmva-1.jpg"]
-// synopsis → texto em PT e ES
-// FOTO DE PERFIL → coloca o arquivo em public/fotos/perfil.jpg
+// KINESTESIA PRODUCCIONES AUDIOVISUALES - PORTFOLIO
 // ═══════════════════════════════════════════════════════════════════════
 
-const PROFILE = "/fotos/perfil.jpg";
+const PROFILE = "/fotos/kinestesia-logo.jpg";
 
 const PROJECTS = [
   {
-    id:"dmva", title:"Donde Me Voy a Encontrar", year:"2026", cat:"direcao",
-    roles:["Direção","Edição","Produção"],
-    desc:{pt:"Curta-metragem Documentário. Co-direção com Mariana Pinheiro de Oliveira e Conter. Em produção para festivais brasileiros e argentinos.",es:"Cortometraje documental Co-dirección con Mariana Pinheiro de Oliveira y Conter. En Producción por festivales brasileños y argentinos."},
-    synopsis:{pt:"Danillo, Marina e Conter sairam das suas raizes para a mesma cidade, com três trajetórias diferentes de deslocamento. Onde a gente se encontra quando deixou pra trás o lugar de onde veio?",es:"Danillo, Marina y Conter dejaron sus raíces para ir a la misma ciudad, siguiendo tres caminos diferentes. ¿Dónde nos encontramos cuando dejamos atrás el lugar de donde venimos?"}, ytUrl:"1BRTiwk5n2I", photos:["/fotos/DMVE1.jpg", "/fotos/DMVE2.jpg"],
-  },
-  {
-    id:"ese", title:"El Secreto de los Estradas", year:"2025", cat:"direcao",
-    roles:["Direção","Edição","Dir. de Som"],
-    desc:{pt:"Curta de terror. Direção, edição e direção de som.",es:"Cortometraje de terror. Dirección, edición y dirección de sonido."},
-    synopsis:{pt:"Em busca de silêncio, um jovem se refugia em um apartamento vazio. Entre passos vindos do andar de cima, vozes distantes e sons que desafiam a lógica, sua tentativa de encontrar paz acaba revelando algo muito mais perturbador do que o próprio passado.",es:"En busca de silencio, un joven se refugia en un apartamento vacío. Entre pasos en el piso de arriba, voces lejanas y sonidos que desafían la lógica, su intento por encontrar la paz termina revelando algo mucho más perturbador que su propio pasado."}, ytUrl:"GHcos5H0YtM", photos:["/fotos/SDLE1.jpg", "/fotos/SDLE2.jpg", "/fotos/SDLE3.jpg"],
-  },
-  {
-    id:"cds", title:"La Cita de Samer", year:"2025", cat:"direcao",
-    roles:["Direção","Montagem","Sound Design"],
-    desc:{pt:"Curta de ficção. Direção, montagem e sound design.",es:"Cortometraje de ficción. Dirección, montaje y sound design."},
-    synopsis:{pt:"Enquanto aguarda uma consulta médica em uma sala de espera aparentemente comum, Samer começa a perder contato com a realidade. Nas alucinações e a crescente sensação de perseguição, ele mergulha em um surto psicótico que transforma um espaço em um labirinto de medo e confusão.",es:"Mientras espera su cita con el médico en una sala de espera aparentemente normal, Samer comienza a perder el contacto con la realidad. Entre alucinaciones y una creciente sensación de persecución, se sumerge en un episodio psicótico que transforma el lugar en un laberinto de miedo y confusión."}, ytUrl:"m9IGtmChsxg", photos:["/fotos/CITA1.jpg","/fotos/CITA2.jpg","/fotos/CITA3.jpg","/fotos/CITA4.jpg" ],
-  },
-  {
-    id:"ced", title:"¿Qué Estamos Discutiendo?", year:"2024", cat:"direcao",
-    roles:["Direção","Montagem","Som Direto"],
-    desc:{pt:"Curta de ficção. Direção, montagem e som direto.",es:"Cortometraje de ficción. Dirección, montaje y sonido directo."},
-    synopsis:{pt:"Acompanhando o percurso cotidiano de um estudante até a universidade pública, o documentário-ensaio atravessa um cenário marcado por cortes orçamentários, greves, falta de infraestrutura e disputas em torno do futuro da educação argentina. Entre discursos oficiais que anunciam melhorias econômicas e os relatos de professores e autoridades universitárias que enfrentam a crise diariamente, o filme reflete sobre a universidade como espaço de resistência, conhecimento e possibilidade de ascensão social. ",es:"Este documental, que sigue el recorrido diario de un estudiante hacia una universidad pública, atraviesa un panorama marcado por recortes presupuestarios, huelgas, falta de infraestructura y disputas sobre el futuro de la educación argentina. Entre discursos oficiales que anuncian mejoras económicas y testimonios de profesores y autoridades universitarias que enfrentan la crisis a diario, la película reflexiona sobre la universidad como un espacio de resistencia, conocimiento y posibilidad de progreso social."}, ytUrl:"1E0eaKjFJqg", photos:["/fotos/ESTAMOS1.jpg", "/fotos/ESTAMOS2.jpg","/fotos/ESTAMOS3.jpg","/fotos/ESTAMOS4.jpg"],
-  },
-  {
-    id:"lav", title:"A Lavanderia", year:"2026", cat:"som",
-    roles:["Dir. de Som","Microfonista","Sound Design"],
-    desc:{pt:"Em produção",es:"En Producción"},
-    synopsis:{pt:"Um homem entra numa lavanderia para fazer uma tarefa rotineira, mas tudo muda quando um segredo obscuro vem à tona. Preso num ciclo temporal, ele precisa enfrentar as consequências daquilo que tenta esconder, repetidamente.",es:"Un hombre entra a una lavandería para hacer una tarea cotidiana, pero todo cambia cuando un oscuro secreto sale a la luz. Atrapado en un bucle temporal, deberá enfrentar una y otra vez las consecuencias de aquello que intenta ocultar."}, ytUrl:"", photos:["/fotos/LAV1.jpeg","/fotos/LAV2.jpeg","/fotos/LAV3.jpeg" ],
-  },
-  {
-    id:"ph", title:"Poco Heterodoxo", year:"2025", cat:"som",
-    roles:["Dir. de Som","Sound Design"],
-    desc:{pt:"Curta de ficção. Diretor de som e sound designer.",es:"Cortometraje de ficción. Director de sonido y sound designer."},
-    synopsis:{pt:"Num mundo onde a heteronormatividade é a exceção e não a regra, Josema está prestes a completar 18 anos.",es:"En un mundo donde la heteronormatividad es la excepción y no la regla, Josema está por cumplir 18."}, ytUrl:"MTvwNIXQRQo", photos:["/fotos/POCO1.jpg","/fotos/POCO2.jpg","/fotos/POCO3.jpg","/fotos/POCO4.jpg","/fotos/POCO5.jpg"],
-  },
-  {
-    id:"ps", title:"Pequeña Simone", year:"2024", cat:"som",
-    roles:["Dir. de Som","Sound Design"],
-    desc:{pt:"Curta de ficção. Diretor de som e sound designer. Em produção",es:"Cortometraje de ficción. Director de sonido y sound designer. Em Producción"},
-    synopsis:{pt:"Uma menina que interpreta tudo literalmente transforma as conversas entre sua mãe e sua tia em um universo de fantasias, onde a imaginação dá novos sentidos às situações mais comuns do dia a dia.",es:"Pequeña Simone es una niña que toma todo de manera literal. Mientras comparte un día cotidiano con su madre y su tía, las conversaciones de los adultos cobran vida en su imaginación, convirtiendo situaciones comunes en aventuras fantásticas, absurdas y divertidas. Entre malentendidos y descubrimientos, Simone construye su propia forma de entender el mundo que la rodea."}, ytUrl:"", photos:["/fotos/SIMONE1.jpg","/fotos/SIMONE2.jpg","/fotos/SIMONE3.jpg","/fotos/SIMONE4.jpg", "/fotos/SIMONE5.jpg"],
-  },
-  {
-    id:"tn", title:"Turno da Noite", year:"2026", cat:"som",
-    roles:["Microfonista"],
-    desc:{pt:"Microfonista de som direto. Em produção",es:"Microfonista de sonido directo. En producción"},
-    // synopsis:{pt:"Em um plantão noturno, uma médica acompanha um paciente em estado crítico. Conforme a noite avança e um novo colega se junta à equipe, acontecimentos incomuns começam a desafiar sua percepção da realidade.",es:"Durante su turno de noche, una doctora atiende a un paciente en estado crítico. A medida que avanza la noche y una nueva compañera se une al equipo, una serie de sucesos inusuales comienzan a poner a prueba su percepción de la realidad."},
-	ytUrl:"", photos:["/fotos/TURNO1.jpg","/fotos/TURNO2.jpg","/fotos/TURNO3.jpg","/fotos/TURNO4.jpg", "/fotos/TURNO5.jpg" ],
-  },
-  {
-    id:"siah", title:"Acervo Cacique Siã HuniKuin", year:"2026", cat:"producao",
-    roles:["Arquivamento","Curadoria Digital"],
-    desc:{pt:"Digitalização e curadoria de acervo histórico audiovisual indígena amazônico.",es:"Digitalización y curaduría de archivo histórico audiovisual indígena amazónico."},
-    synopsis:{pt:"",es:""}, ytUrl:"", photos:[],
+    id:"vpl", 
+    title:"Voy a Perder la Cabeza por tu Amor", 
+    year:"2025–2026", 
+    cat:"producao",
+    roles:["Projeción","Edición","Dir. de Som","Diseño"],
+    desc:{
+      pt:"Produção teatral imersiva. Produção audiovisual completa com direção de som, pós-produção, design de arte e projeção mapeada em Resolume Arena.",
+      es:"Producción teatral inmersiva. Producción audiovisual completa con dirección de sonido, post-producción, diseño de arte y proyección mapeada en Resolume Arena."
+    },
+    synopsis:{
+      pt:"Produção colaborativa entre Kinestesia Producciones e Los Tercos. Seis cortometrajes audiovisuais criados especificamente para a experiência teatral imersiva, integrando som, projeção mapeada e design visual em sincronía perfeita com a performance ao vivo.",
+      es:"Producción colaborativa entre Kinestesia Producciones y Los Tercos. Seis cortometrajes audiovisuales creados específicamente para la experiencia teatral inmersiva, integrando sonido, proyección mapeada y diseño visual en sincronía perfecta con la performance en vivo."
+    },
+    ytUrls: ["atztovgdVM4","6WzS78lnXCE","Zvh01PVITJw"],
+    photos:["/fotos/TERCA1.jpg","/fotos/TERCA2.jpg","/fotos/TERCA3.jpg","/fotos/TERCA4.jpg","/fotos/TERCA5.jpg","/fotos/TERCA6.jpg","/fotos/TERCA7.jpg"]
   },
 
-  {
-    id:"vpl", title:"Voy a Perder la Cabeza por tu Amor", year:"2025–2026", cat:"outros",
-    roles:["Projeção","Edição"],
-    desc:{pt:"Teatro. Chefe de projeção no Resolume Arena e editor.",es:"Teatro. Jefe de proyección en Resolume Arena y editor."},
-    synopsis:{pt:"",es:""},   ytUrls: [
-    "atztovgdVM4",
-    "6WzS78lnXCE",
-    "Zvh01PVITJw",], photos:["/fotos/TERCA1.jpg","/fotos/TERCA2.jpg","/fotos/TERCA3.jpg","/fotos/TERCA4.jpg","/fotos/TERCA5.jpg","/fotos/TERCA6.jpg","/fotos/TERCA7.jpg"  ],
-  },
-  {
-    id:"pen", title:"Penumbra", year:"2025", cat:"outros",
-    roles:["Dir. de Fotografia"],
-    desc:{pt:"Curta. Diretor de fotografia.",es:"Cortometraje. Director de fotografía."},
-    synopsis:{pt:"Em meio à investigação de um assassinato que o consome, um detetive recebe a visita de uma velha amiga. O que começa como uma conversa sobre o caso se transforma em uma noite marcada por suspeitas, silêncios e confrontos sutis, onde a busca pela verdade ameaça expor segredos cuidadosamente ocultos.",es:"En medio de una investigación de asesinato que lo absorbe por completo, un detective recibe la visita de un viejo amigo. Lo que comienza como una conversación sobre el caso se transforma en una noche marcada por la sospecha, los silencios y los sutiles enfrentamientos, donde la búsqueda de la verdad amenaza con sacar a la luz secretos cuidadosamente ocultos."}, ytUrl:"tOWDvcCqV-4", photos:["/fotos/PENUMBRA1.jpg","/fotos/PENUMBRA2.jpg","/fotos/PENUMBRA3.jpg" ],
-  },
-  {
-    id:"hcn", title:"Homenagem Cine Noir", year:"2024", cat:"outros",
-    roles:["Direção","Fotografia"],
-    desc:{pt:"Evento cinematográfico.",es:"Evento cinematográfico."},
-    synopsis:{pt:"",es:""}, ytUrl:"", photos:[],
-  },
+  // TEMPLATE PARA ADICIONAR NOVOS PROJETOS
+  // {
+  //   id:"bandoneón", 
+  //   title:"Bandoneón", 
+  //   year:"2026", 
+  //   cat:"direcao",
+  //   roles:["Producción","Dir. de Fotografia","Sound Design"],
+  //   desc:{
+  //     pt:"Descrição breve do projeto em português",
+  //     es:"Descripción breve del proyecto en español"
+  //   },
+  //   synopsis:{
+  //     pt:"Sinopse completa em português",
+  //     es:"Sinopsis completa en español"
+  //   },
+  //   ytUrl:"", // ou ytUrls: ["id1", "id2"]
+  //   photos:["/fotos/BANDONEÓN1.jpg","/fotos/BANDONEÓN2.jpg"]
+  // },
 ];
 
 const UI = {
   pt:{
-    tag:"PORTFÓLIO AUDIOVISUAL",subtitle:"Cineasta · Diretor de Som · Produtor Cultural",
+    tag:"PRODUTORA AUDIOVISUAL",
+    subtitle:"Produção · Som · Pós-produção",
     cats:{todos:"Todos",direcao:"Direção",som:"Som",producao:"Produção",outros:"Outros"},
-    roles:{"Direção":"Direção","Edição":"Edição","Produção":"Produção","Dir. de Som":"Dir. de Som","Microfonista":"Microfonista","Sound Design":"Sound Design","Montagem":"Montagem","Som Direto":"Som Direto","Arquivamento":"Arquivamento","Curadoria Digital":"Curadoria Digital","Co-Direção":"Co-Direção","Produção Executiva":"Produção Executiva","Projeção":"Projeção","Dir. de Fotografia":"Dir. de Fotografia","Fotografia":"Fotografia"},
-    bio:<>Cineasta amapaense formado em Artes Audiovisuais pela <b>Universidad Nacional de La Plata (UNLP)</b>, onde fundou a <b>Kinestesia Producciones Audiovisuales</b>. Atua entre Brasília e La Plata com ampla experiência em produção audiovisual, som direto, sound design e gestão de projetos culturais. Sua obra explora migração, identidade e fronteiras, articulando o cinema emergente <b>amazônico e afro-indígena</b> com colaborações internacionais.</>,
+    roles:{
+      "Direção":"Direção",
+      "Edição":"Edição",
+      "Produção":"Produção",
+      "Dir. de Som":"Dir. de Som",
+      "Microfonista":"Microfonista",
+      "Sound Design":"Sound Design",
+      "Montagem":"Montagem",
+      "Som Direto":"Som Direto",
+      "Arquivamento":"Arquivamento",
+      "Curadoria Digital":"Curadoria Digital",
+      "Co-Direção":"Co-Direção",
+      "Produção Executiva":"Produção Executiva",
+      "Projeção":"Projeção",
+      "Dir. de Fotografia":"Dir. de Fotografia",
+      "Fotografia":"Fotografia",
+      "Diseño":"Design"
+    },
+    bio:<>Produtora independiente fundada en La Plata, Argentina. Nos especializamos en dirección, producción audiovisual, sound design y gestión de proyectos culturales. Trabajamos entre Argentina y Brasil en co-producciones que exploran historias de migración, identidad y fronteras.</>,
     services:[
-      {icon:"🎬",title:"Direção & Fotografia",items:["Direção cinematográfica","Direção de fotografia (DoP)","Operação de câmera"]},
+      {icon:"🎬",title:"Dirección & Fotografía",items:["Dirección cinematográfica","Dirección de fotografía (DoP)","Operación de cámara"]},
       {icon:"🎙️",title:"Som & Sound Design",items:["Som direto · boom · microfonagem","Sound design","Pós-produção de áudio","Mixagem e edição de diálogos"]},
       {icon:"🎞️",title:"Pós-produção",items:["Edição de vídeo (Premiere / CapCut)","Montagem","Tratamento de cor","Projeção mapeada (Resolume Arena)"]},
       {icon:"🌐",title:"Acessibilidade & Tradução",items:["Legendagem SRT/ASS","Tradução Espanhol ↔ Português","Interpretação simultânea"]},
       {icon:"📋",title:"Gestão & Produção",items:["Produção executiva","Gestão de projetos culturais","Co-produções internacionais","Licitações públicas (Compras.gov/PNCP)"]},
-      {icon:"💻",title:"TI & Suporte",items:["Suporte técnico B2B","Infraestrutura e informática"]},
     ],
     voltar:"← Voltar",voltar_film:"← Filmografia",ver:"Ver projeto →",
     video:"Vídeo",sinopse:"Sinopse",galeria:"Galeria",ficha:"Ficha Técnica",
@@ -112,17 +84,34 @@ const UI = {
     sobre:"Sobre",filmografia:"Filmografia",servicos:"Serviços",contato:"Contato",contato_btn:"✉ Contato",
   },
   es:{
-    tag:"PORTFOLIO AUDIOVISUAL",subtitle:"Cineasta · Director de Sonido · Productor Cultural",
+    tag:"PRODUCTORA AUDIOVISUAL",
+    subtitle:"Producción · Sonido · Post-producción",
     cats:{todos:"Todos",direcao:"Dirección",som:"Sonido",producao:"Producción",outros:"Otros"},
-    roles:{"Direção":"Dirección","Edição":"Edición","Produção":"Producción","Dir. de Som":"Dir. de Sonido","Microfonista":"Microfonista","Sound Design":"Sound Design","Montagem":"Montaje","Som Direto":"Sonido Directo","Arquivamento":"Archivo","Curadoria Digital":"Curaduría Digital","Co-Direção":"Co-Dirección","Produção Executiva":"Producción Ejecutiva","Projeção":"Proyección","Dir. de Fotografia":"Dir. de Fotografía","Fotografia":"Fotografía"},
-    bio:<>Cineasta brasileño de Amapá, formado en Artes Audiovisuales en la <b>Universidad Nacional de La Plata (UNLP)</b>, donde fundó <b>Kinestesia Producciones Audiovisuales</b>. Trabaja entre Brasilia y La Plata con amplia experiencia en producción audiovisual, sonido directo, sound design y gestión de proyectos culturales. Su obra explora migración, identidad y fronteras, articulando el cine emergente <b>amazónico y afroindígena</b> con colaboraciones internacionales.</>,
+    roles:{
+      "Direção":"Dirección",
+      "Edição":"Edición",
+      "Produção":"Producción",
+      "Dir. de Som":"Dir. de Sonido",
+      "Microfonista":"Microfonista",
+      "Sound Design":"Sound Design",
+      "Montagem":"Montaje",
+      "Som Direto":"Sonido Directo",
+      "Arquivamento":"Archivo",
+      "Curadoria Digital":"Curaduría Digital",
+      "Co-Direção":"Co-Dirección",
+      "Produção Executiva":"Producción Ejecutiva",
+      "Projeção":"Proyección",
+      "Dir. de Fotografia":"Dir. de Fotografía",
+      "Fotografia":"Fotografía",
+      "Diseño":"Diseño"
+    },
+    bio:<>Productora independiente fundada en La Plata, Argentina. Nos especializamos en dirección, producción audiovisual, sound design y gestión de proyectos culturales. Trabajamos entre Argentina y Brasil en co-producciones que exploran historias de migración, identidad y fronteras.</>,
     services:[
       {icon:"🎬",title:"Dirección & Fotografía",items:["Dirección cinematográfica","Dirección de fotografía (DoP)","Operación de cámara"]},
       {icon:"🎙️",title:"Sonido & Sound Design",items:["Sonido directo · boom · microfonía","Sound design","Post-producción de audio","Mezcla y edición de diálogos"]},
       {icon:"🎞️",title:"Post-producción",items:["Edición de video (Premiere / CapCut)","Montaje","Corrección de color","Proyección mapeada (Resolume Arena)"]},
       {icon:"🌐",title:"Accesibilidad & Traducción",items:["Subtitulado SRT/ASS","Traducción Español ↔ Portugués","Interpretación simultánea"]},
       {icon:"📋",title:"Gestión & Producción",items:["Producción ejecutiva","Gestión de proyectos culturales","Co-producciones internacionales","Licitaciones públicas"]},
-      {icon:"💻",title:"TI & Soporte",items:["Soporte técnico B2B","Infraestructura e informática"]},
     ],
     voltar:"← Volver",voltar_film:"← Filmografía",ver:"Ver proyecto →",
     video:"Video",sinopse:"Sinopsis",galeria:"Galería",ficha:"Ficha Técnica",
@@ -133,9 +122,9 @@ const UI = {
 };
 
 const C={bg:"#090909",surf:"#0f0f0f",card:"#161616",bord:"#222",acc:"#c9a84c",txt:"#ede8df",mut:"#585858"};
-const CAT_C={direcao:"#c9a84c",som:"#5fa8c0",producao:"#9370c0",outros:"#5fa87a"};
-const CATS=["todos","direcao","som","producao","outros"];
-const ROLE_CAT={"Direção":"direcao","Edição":"direcao","Produção":"producao","Dir. de Som":"som","Microfonista":"som","Sound Design":"som","Montagem":"direcao","Som Direto":"som","Arquivamento":"producao","Curadoria Digital":"producao","Co-Direção":"direcao","Produção Executiva":"producao","Projeção":"outros","Dir. de Fotografia":"outros","Fotografia":"outros"};
+const CAT_C={direcao:"#c9a84c",som:"#5fa8c0",producao:"#9370c0",otros:"#5fa87a"};
+const CATS=["todos","direcao","som","producao","otros"];
+const ROLE_CAT={"Direção":"direcao","Edición":"direcao","Edição":"direcao","Produção":"producao","Producción":"producao","Dir. de Som":"som","Dir. de Sonido":"som","Microfonista":"som","Sound Design":"som","Montagem":"direcao","Montaje":"direcao","Som Direto":"som","Sonido Directo":"som","Arquivamento":"producao","Archivo":"producao","Curadoria Digital":"producao","Curaduría Digital":"producao","Co-Direção":"direcao","Co-Dirección":"direcao","Produção Executiva":"producao","Producción Ejecutiva":"producao","Projeção":"otros","Proyección":"otros","Dir. de Fotografia":"otros","Dir. de Fotografía":"otros","Fotografia":"otros","Fotografía":"otros","Diseño":"otros"};
 const getYTId=url=>{if(!url)return null;const m=url.match(/(?:v=|youtu\.be\/)([^&?/\s]{11})/);return m?m[1]:(url.trim().length===11?url.trim():null);};
 
 // ── ATOMS ─────────────────────────────────────────────────────────────────────
@@ -446,7 +435,7 @@ export default function Portfolio(){
         justifyContent:"space-between",height:50}}>
         <span onClick={()=>setActive(null)}
           style={{color:C.acc,fontWeight:800,fontSize:12.5,letterSpacing:2.5,cursor:"pointer"}}>
-          DANI MATOS
+          KINESTESIA
         </span>
         <div style={{display:"flex",alignItems:"center",gap:4}}>
           {activeProject?(
@@ -489,7 +478,7 @@ export default function Portfolio(){
             alignItems:"flex-start",flexWrap:"wrap"}}>
             <div style={{width:124,height:124,borderRadius:"50%",overflow:"hidden",
               border:`2px solid ${C.acc}55`,flexShrink:0,background:C.card}}>
-              <img src={PROFILE} alt="Dani Matos"
+              <img src={PROFILE} alt="Kinestesia"
                 style={{width:"100%",height:"100%",objectFit:"cover"}}
                 onError={e=>{e.target.style.display="none";}}/>
             </div>
@@ -498,17 +487,17 @@ export default function Portfolio(){
                 {t.tag}
               </div>
               <h1 style={{color:C.txt,fontSize:32,fontWeight:800,margin:"0 0 4px",lineHeight:1.15}}>
-                Dani Matos
+                Kinestesia
               </h1>
               <div style={{color:C.acc,fontSize:13.5,fontWeight:600,marginBottom:14,letterSpacing:.3}}>
                 {t.subtitle}
               </div>
               <div style={{color:C.mut,fontSize:12.5,lineHeight:1.75}}>
-                Brasília, DF &nbsp;·&nbsp; La Plata, Argentina<br/>
+                La Plata, Argentina &nbsp;·&nbsp; Brasília, DF<br/>
                 Kinestesia Producciones Audiovisuales
               </div>
               <div style={{marginTop:14,display:"flex",gap:6,flexWrap:"wrap"}}>
-                {["🇧🇷 Português","🇦🇷 Español","🇺🇸 English"].map(l=>(
+                {["🇦🇷 Español","🇧🇷 Português"].map(l=>(
                   <span key={l} style={{padding:"3px 10px",borderRadius:99,
                     background:"#1c1c1c",color:C.mut,fontSize:11,fontWeight:600}}>
                     {l}
@@ -516,7 +505,7 @@ export default function Portfolio(){
                 ))}
               </div>
               <div style={{marginTop:22}}>
-                <a href="mailto:danillo.assuncao@gmail.com"
+                <a href="mailto:kinestesia@gmail.com"
                   style={{padding:"8px 20px",background:C.acc,color:"#090909",
                     borderRadius:6,fontWeight:700,fontSize:12,textDecoration:"none",
                     letterSpacing:.3}}>
@@ -589,7 +578,7 @@ export default function Portfolio(){
           <section id="contato" style={{maxWidth:840,margin:"0 auto",padding:"52px 24px 80px"}}>
             <SHead>{t.contato}</SHead>
             <div style={{marginTop:22,display:"flex",gap:12,flexWrap:"wrap"}}>
-              <CTile icon="✉️" label={t.email} value="danillo.assuncao@gmail.com" href="mailto:danillo.assuncao@gmail.com"/>
+              <CTile icon="✉️" label={t.email} value="kinestesia@gmail.com" href="mailto:kinestesia@gmail.com"/>
               <CTile icon="💬" label={t.whatsapp} value="(61) 98228-6913" href="https://wa.me/5561982286913"/>
               <CTile icon="🏢" label={t.empresa} value="Kinestesia Producciones Audiovisuales"/>
             </div>
@@ -597,7 +586,7 @@ export default function Portfolio(){
 
           <footer style={{borderTop:`1px solid ${C.bord}`,padding:"18px 24px",
             textAlign:"center",color:"#2b2b2b",fontSize:10.5,letterSpacing:1,fontWeight:700}}>
-            DANI MATOS · BRASÍLIA / LA PLATA · {new Date().getFullYear()}
+            KINESTESIA PRODUCCIONES · LA PLATA / BRASÍLIA · {new Date().getFullYear()}
           </footer>
         </>
       )}
